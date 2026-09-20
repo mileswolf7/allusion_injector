@@ -1,0 +1,126 @@
+import json
+
+notebook = {
+    "cells": [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "# Allusion Injector\n",
+                "\n",
+                "Enter text below and search for allusions using the Allusion Injector engine."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": None,
+            "metadata": {},
+            "outputs": [],
+            "source": [
+                "from allusion_engine import get_allusions_for_text\n",
+                "\n",
+                "print('Allusion Injector loaded successfully.')"
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": None,
+            "metadata": {},
+            "outputs": [],
+            "source": [
+                "import ipywidgets as widgets\n",
+                "from IPython.display import display, HTML\n",
+                "\n",
+                "text_input = widgets.Textarea(\n",
+                "    placeholder='Enter a passage of text here...',\n",
+                "    description='Text:',\n",
+                "    layout=widgets.Layout(width='100%', height='180px')\n",
+                ")\n",
+                "\n",
+                "find_button = widgets.Button(\n",
+                "    description='Find Allusions',\n",
+                "    button_style='primary',\n",
+                "    icon='search'\n",
+                ")\n",
+                "\n",
+                "clear_button = widgets.Button(\n",
+                "    description='Clear',\n",
+                "    icon='trash'\n",
+                ")\n",
+                "\n",
+                "output = widgets.Output()\n",
+                "\n",
+                "def find_allusions(button):\n",
+                "    with output:\n",
+                "        output.clear_output()\n",
+                "\n",
+                "        text = text_input.value.strip()\n",
+                "\n",
+                "        if not text:\n",
+                "            print('Please enter some text first.')\n",
+                "            return\n",
+                "\n",
+                "        print('Searching...')\n",
+                "\n",
+                "        try:\n",
+                "            results = get_allusions_for_text(text)\n",
+                "\n",
+                "            if not results:\n",
+                "                print('No allusions were found.')\n",
+                "                return\n",
+                "\n",
+                "            print(f'Found {len(results)} result(s).')\n",
+                "            print()\n",
+                "\n",
+                "            for number, result in enumerate(results, 1):\n",
+                "                print(f'{number}. {result}')\n",
+                "                print()\n",
+                "\n",
+                "        except Exception as error:\n",
+                "            print('An error occurred:')\n",
+                "            print(error)\n",
+                "\n",
+                "def clear_text(button):\n",
+                "    text_input.value = ''\n",
+                "    with output:\n",
+                "        output.clear_output()\n",
+                "\n",
+                "find_button.on_click(find_allusions)\n",
+                "clear_button.on_click(clear_text)\n",
+                "\n",
+                "display(text_input)\n",
+                "display(widgets.HBox([find_button, clear_button]))\n",
+                "display(output)"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "## Example\n",
+                "\n",
+                "Try this example:\n",
+                "\n",
+                "> He felt like David facing Goliath, but he decided to open Pandora's box anyway."
+            ]
+        }
+    ],
+    "metadata": {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3"
+        },
+        "language_info": {
+            "name": "python",
+            "version": "3"
+        }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 5
+}
+
+with open("allusion_demo.ipynb", "w", encoding="utf-8") as f:
+    json.dump(notebook, f, indent=2)
+
+print("Created allusion_demo.ipynb")
