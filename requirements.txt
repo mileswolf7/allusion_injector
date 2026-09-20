@@ -1,0 +1,4 @@
+spacy
+gensim
+jupyter
+notebook
