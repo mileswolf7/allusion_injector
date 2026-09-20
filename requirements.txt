@@ -1,4 +1,7 @@
-spacy
-gensim
 jupyter
 notebook
+ipywidgets
+spacy==3.7.5
+gensim==4.3.3
+scipy<1.13
+numpy<2
